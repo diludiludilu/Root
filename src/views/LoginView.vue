@@ -1,40 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth'; // Import the new store
 
-// Variables to hold user input
 const username = ref('');
 const password = ref('');
 const error = ref('');
 const router = useRouter();
+const auth = useAuthStore();
 
-// This function runs when you click "Login"
-const handleLogin = async () => {
-  try {
-    // 1. Send data to DummyJSON
-    const response = await fetch('https://dummyjson.com/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username: username.value,
-        password: password.value,
-      })
-    });
-
-    // 2. Check if login worked
-    if (!response.ok) throw new Error('Login failed! Check username.');
-    
-    const data = await response.json();
-    
-    // 3. Save the token (like a ticket) to remember the user
-    localStorage.setItem('token', data.accessToken);
-    localStorage.setItem('user', JSON.stringify(data));
-    
-    // 4. Go to the Home page (we will make this later)
-    router.push('/'); 
-    
-  } catch (err) {
-    error.value = 'Invalid credentials! Try username: emilys';
+const handleLogin = () => {
+  // Use our store to check credentials
+  const success = auth.login(username.value, password.value);
+  
+  if (success) {
+    router.push('/'); // Go to Home
+  } else {
+    error.value = 'Unknown traveler. Check your spelling.';
   }
 };
 </script>
@@ -52,27 +34,31 @@ const handleLogin = async () => {
       <form @submit.prevent="handleLogin" class="space-y-4">
         <div>
           <label class="block mb-1 font-bold">Username</label>
-          <input v-model="username" type="text" placeholder="e.g. emilys" 
+          <input v-model="username" type="text" placeholder="Enter username" 
                  class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:outline-none focus:ring-2 focus:ring-vintage-gold" />
         </div>
         
         <div>
           <label class="block mb-1 font-bold">Password</label>
-          <input v-model="password" type="password" placeholder="e.g. emilyspass" 
+          <input v-model="password" type="password" placeholder="Enter password" 
                  class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:outline-none focus:ring-2 focus:ring-vintage-gold" />
         </div>
 
         <p v-if="error" class="text-red-600 text-sm font-bold text-center">{{ error }}</p>
 
         <button type="submit" 
-                class="w-full bg-vintage-ink text-vintage-paper py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold transition-colors">
+                class="w-full bg-vintage-ink text-vintage-paper py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold transition-colors shadow-md">
           Open Book
         </button>
       </form>
 
-      <div class="mt-4 text-xs text-center text-gray-500">
-        (Hint: Use <b>emilys</b> / <b>emilyspass</b>)
+      <div class="mt-6 text-center text-sm border-t border-gray-300 pt-4">
+        <p class="text-gray-600 mb-2">New to the family?</p>
+        <router-link to="/signup" class="block w-full bg-white border-2 border-vintage-ink text-vintage-ink py-2 font-bold uppercase hover:bg-gray-100 transition-colors text-center decoration-0">
+          Create New Account
+        </router-link>
       </div>
+
     </div>
   </div>
 </template>
