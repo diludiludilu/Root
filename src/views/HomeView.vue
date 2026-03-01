@@ -84,7 +84,7 @@ const handleLogout = () => {
       </div>
       <div class="flex items-center gap-4">
         <button @click="router.push('/clan')" class="bg-vintage-gold text-vintage-ink px-4 py-2 rounded font-bold hover:bg-white transition-colors text-sm shadow-md border border-vintage-paper">
-          📜 My Clan
+          📜 My Family 
         </button>
         <button @click="handleLogout" class="text-sm font-bold hover:text-vintage-gold underline decoration-vintage-gold">
           Close Book
@@ -95,12 +95,12 @@ const handleLogout = () => {
     <main class="p-8 max-w-6xl mx-auto">
       
       <div class="text-center mb-12 mt-4">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4">Find Your Clan</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-4">Find Your Family</h2>
         <form @submit.prevent="handleSearch" class="relative max-w-lg mx-auto">
-          <input v-model="searchQuery" type="text" placeholder="Try 'Smith'..." 
+          <input v-model="searchQuery" type="text" placeholder="Your family name? eg:- 'Smith'..." 
             class="w-full p-4 pl-6 rounded-full border-4 border-vintage-ink bg-white shadow-2xl focus:ring-4 focus:ring-vintage-gold focus:outline-none text-xl font-bold" />
           <button type="submit" class="absolute right-2 top-2 bottom-2 px-6 bg-vintage-ink text-vintage-paper rounded-full font-bold hover:bg-vintage-gold transition-colors uppercase">
-            {{ loading ? '...' : 'Seek' }}
+            {{ loading ? '...' : 'Find' }}
           </button>
         </form>
       </div>

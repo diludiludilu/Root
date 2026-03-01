@@ -11,7 +11,7 @@ const router = useRouter();
     
     <nav class="bg-vintage-ink text-vintage-paper p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
       <div class="flex items-center gap-3">
-        <h1 class="text-xl font-bold tracking-widest">MY SAVED CLAN</h1>
+        <h1 class="text-xl font-bold tracking-widest">MY FAMILY</h1>
       </div>
       <button @click="router.push('/')" class="text-sm font-bold hover:text-vintage-gold underline decoration-vintage-gold">
         ⬅ Back to Search
@@ -20,15 +20,12 @@ const router = useRouter();
 
     <main class="p-8 max-w-6xl mx-auto">
       
-      <div class="text-center mb-12 mt-4">
-        <h2 class="text-5xl font-bold mb-4">Your Saved Family</h2>
-        <p class="italic text-gray-600">"Keeping the legacy alive..."</p>
-      </div>
+
 
       <div v-if="clanStore.members.length === 0" class="text-center opacity-50 mt-20">
-        <p class="text-2xl">Your clan book is empty.</p>
+        <p class="text-2xl">Your family book is empty.</p>
         <button @click="router.push('/')" class="mt-4 bg-vintage-ink text-vintage-paper px-6 py-2 rounded font-bold hover:bg-vintage-gold">
-          Go Find People
+          Find Your Root
         </button>
       </div>
 

@@ -37,18 +37,18 @@ const handleSignup = () => {
     <div class="bg-white p-8 rounded shadow-2xl border-2 border-vintage-gold w-96 relative">
       <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-800 border-2 border-black"></div>
 
-      <h1 class="text-3xl font-bold text-center mb-2 underline decoration-vintage-gold">Join the Clan</h1>
-      <p class="text-center text-sm text-gray-600 mb-6 italic">"Create your own legacy..."</p>
+      <h1 class="text-3xl font-bold text-center mb-2 underline decoration-vintage-gold">Family Root Finder</h1>
+      <p class="text-center text-sm text-gray-600 mb-6 italic">"Connect with your past..."</p>
 
       <form @submit.prevent="handleSignup" class="space-y-4">
         <div>
-          <label class="block mb-1 font-bold">Choose Username</label>
+          <label class="block mb-1 font-bold">Your Name</label>
           <input v-model="username" type="text" placeholder="NewUser123" required
                  class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:ring-2 focus:ring-green-600 outline-none" />
         </div>
         
         <div>
-          <label class="block mb-1 font-bold">Password</label>
+          <label class="block mb-1 font-bold">Create New Password</label>
           <input v-model="password" type="password" placeholder="******" required
                  class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:ring-2 focus:ring-green-600 outline-none" />
         </div>
@@ -60,7 +60,7 @@ const handleSignup = () => {
         </div>
 
         <button type="submit" 
-                class="w-full bg-green-800 text-white py-2 font-bold uppercase tracking-widest hover:bg-green-700 transition-colors shadow-lg">
+                class="w-full bg-vintage-ink text-vintage-paper py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold transition-colors shadow-md">
           Create Account
         </button>
       </form>

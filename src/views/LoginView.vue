@@ -10,13 +10,12 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const handleLogin = () => {
-  // Use our store to check credentials
   const success = auth.login(username.value, password.value);
   
   if (success) {
     router.push('/'); // Go to Home
   } else {
-    error.value = 'Unknown traveler. Check your spelling.';
+    error.value = 'Please, check your username / password.';
   }
 };
 </script>
@@ -27,7 +26,7 @@ const handleLogin = () => {
     <div class="bg-white p-8 rounded shadow-2xl border-2 border-vintage-gold w-96 relative">
       <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-red-800 border-2 border-black"></div>
 
-      <h1 class="text-3xl font-bold text-center mb-6 underline decoration-vintage-gold">Family Root</h1>
+      <h1 class="text-3xl font-bold text-center mb-6 underline decoration-vintage-gold">Family Root Finder</h1>
       
       <p class="mb-4 text-center italic text-sm text-gray-600">"Connect with your past..."</p>
 
