@@ -32,9 +32,9 @@ const handleSignup = () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-vintage-paper text-vintage-ink font-serif">
+  <div class="min-h-screen flex items-center justify-center bg-vintage-paper dark:bg-[#121212] text-vintage-ink dark:text-gray-100 font-serif transition-colors duration-300">
     
-    <div class="bg-white p-8 rounded shadow-2xl border-2 border-vintage-gold w-96 relative">
+    <div class="bg-white dark:bg-gray-800 p-8 rounded shadow-2xl border-2 border-vintage-gold dark:border-gray-600 w-96 relative transition-colors duration-300">
       <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-800 border-2 border-black"></div>
 
       <h1 class="text-3xl font-bold text-center mb-2 underline decoration-vintage-gold">Family Root Finder</h1>
@@ -44,30 +44,30 @@ const handleSignup = () => {
         <div>
           <label class="block mb-1 font-bold">Your Name</label>
           <input v-model="username" type="text" placeholder="NewUser123" required
-                 class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:ring-2 focus:ring-green-600 outline-none" />
+                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-600 outline-none transition-colors duration-300" />
         </div>
         
         <div>
           <label class="block mb-1 font-bold">Create New Password</label>
           <input v-model="password" type="password" placeholder="******" required
-                 class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:ring-2 focus:ring-green-600 outline-none" />
+                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-600 outline-none transition-colors duration-300" />
         </div>
 
         <div>
           <label class="block mb-1 font-bold">Confirm Password</label>
           <input v-model="confirmPassword" type="password" placeholder="******" required
-                 class="w-full border-2 border-vintage-ink p-2 rounded bg-gray-50 focus:ring-2 focus:ring-green-600 outline-none" />
+                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-600 outline-none transition-colors duration-300" />
         </div>
 
         <button type="submit" 
-                class="w-full bg-vintage-ink text-vintage-paper py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold transition-colors shadow-md">
+                class="w-full bg-vintage-ink dark:bg-gray-700 text-vintage-paper dark:text-white py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold dark:hover:bg-gray-600 transition-colors shadow-md">
           Create Account
         </button>
       </form>
 
       <div class="mt-4 text-center text-sm">
         <p>Already have a book?</p>
-        <router-link to="/login" class="font-bold underline text-vintage-ink hover:text-vintage-gold">
+        <router-link to="/login" class="font-bold underline text-vintage-ink dark:text-gray-300 hover:text-vintage-gold dark:hover:text-white">
           Open Existing Book (Login)
         </router-link>
       </div>

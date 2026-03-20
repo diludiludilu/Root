@@ -1,7 +1,8 @@
 <script setup lang="ts">
-// The App.vue is just a window that shows other pages
+import ThemeToggle from './components/ThemeToggle.vue'
 </script>
 
 <template>
+  <ThemeToggle />
   <router-view></router-view>
 </template>
