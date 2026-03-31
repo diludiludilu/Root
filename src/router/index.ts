@@ -3,6 +3,7 @@ import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'// <--- Added this
 import HomeView from '../views/HomeView.vue'
 import ClanView from '../views/ClanView.vue'
+import UserDetailView from '../views/UserDetailView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -10,7 +11,8 @@ const router = createRouter({
         { path: '/', name: 'login', component: LoginView },
         { path: '/signup', name: 'signup', component: SignupView }, // <--- Added this
         { path: '/home', name: 'home', component: HomeView },
-        { path: '/clan', name: 'clan', component: ClanView }
+        { path: '/clan', name: 'clan', component: ClanView },
+        { path: '/user/:id', name: 'userDetail', component: UserDetailView }
     ]
 })
 

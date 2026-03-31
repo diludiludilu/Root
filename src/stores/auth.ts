@@ -1,14 +1,15 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import type { User } from '../types';
 
 export const useAuthStore = defineStore('auth', () => {
 
     // 1. Get the "Database" of users from memory
     const storedUsers = localStorage.getItem('user_db');
-    const users = ref<any[]>(storedUsers ? JSON.parse(storedUsers) : []);
+    const users = ref<User[]>(storedUsers ? JSON.parse(storedUsers) : []);
 
     // 2. The currently logged-in user
-    const currentUser = ref<any>(JSON.parse(localStorage.getItem('session_user') || 'null'));
+    const currentUser = ref<User | null>(JSON.parse(localStorage.getItem('session_user') || 'null'));
 
     // --- ACTION: SIGN UP ---
     const register = (username: string, pass: string) => {
@@ -17,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
             return false;
         }
 
-        const newUser = { username, pass };
+        const newUser = { username, pass } as any;
         users.value.push(newUser);
 
         localStorage.setItem('user_db', JSON.stringify(users.value));
@@ -26,15 +27,29 @@ export const useAuthStore = defineStore('auth', () => {
     };
 
     // --- ACTION: LOGIN ---
-    const login = (username: string, pass: string) => {
-        const foundUser = users.value.find(u => u.username === username && u.pass === pass);
-
-        if (foundUser) {
-            currentUser.value = foundUser;
-            localStorage.setItem('session_user', JSON.stringify(foundUser));
-            localStorage.setItem('token', 'fake-valid-token');
+    const login = async (username: string, pass: string) => {
+        try {
+            const res = await fetch('https://dummyjson.com/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username,
+                    password: pass,
+                    expiresInMins: 60, // get a fresh 1-hour token
+                })
+            });
+            
+            if (!res.ok) return false;
+            
+            const data = await res.json();
+            
+            currentUser.value = data;
+            localStorage.setItem('session_user', JSON.stringify(data));
+            localStorage.setItem('token', data.token); // the real JWT
+            
             return true;
-        } else {
+        } catch (err) {
+            console.error(err);
             return false;
         }
     };

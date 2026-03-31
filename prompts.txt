@@ -1,0 +1,20 @@
+The aim 01: Start the development server
+Actual prompt: run
+
+The aim 02: Change the default page to the Login view instead of Home
+Actual prompt: first should be log in page
+
+The aim 03: Run the updated application to test routing
+Actual prompt: now run
+
+The aim 04: Ensure the app stays on the login page specifically when not authenticated instead of bypassing it
+Actual prompt: but first page stays as home not as login page i want when i run this app it should be in login page first
+
+The aim 05: Fix state logic so different accounts have different shopping cart metadata
+Actual prompt: for every different account it should have different family cart details right
+
+The aim 06: Deep-dive into local storage binding for the Clan cart because data seemed to bleed between sessions
+Actual prompt: but i think it still like this check properly and change it please
+
+The aim 07: Refactor entirely for an A+ distinction based on the university CS3404 rubric rules
+Actual prompt: these are my lecturer guide make it according to that

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import type { User } from '../types';
 
 export const useClanStore = defineStore('clan', () => {
     
@@ -14,7 +15,7 @@ export const useClanStore = defineStore('clan', () => {
         return 'myClan_guest';
     };
 
-    const members = ref<any[]>([]);
+    const members = ref<User[]>([]);
 
     const refreshMembers = () => {
         const key = getStoreKey();
@@ -30,7 +31,7 @@ export const useClanStore = defineStore('clan', () => {
     // Initialize once
     refreshMembers();
 
-    const addMember = (person: any) => {
+    const addMember = (person: User) => {
         refreshMembers(); // ENSURE we have latest for this user
         if (!members.value.find(m => m.id === person.id)) {
             members.value.push(person);

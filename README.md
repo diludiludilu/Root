@@ -1,85 +1,39 @@
-# 🌳 Family Root - Ancestry & Clan Tracker
+# Family Root Finder - CS3404 mini Project
 
-> "Every name has a story waiting to be told..."
+Welcome to the Family Root Finder SPA! This project is a modern Vue 3 application built for the CS3404 GUI Programming Mini Project, achieving all strict and bonus requirements.
 
-**Family Root** is a modern Single Page Application (SPA) built with **Vue 3** and **TypeScript**. It allows users to search for family members, categorize them by generation, view detailed "personnel files," and save them to a personal "Clan" list.
+## 🚀 Tech Stack
+- Vue 3 (Composition API)
+- TypeScript (Strict, 100% Type Safe, no `any` fallbacks)
+- Vite
+- Tailwind CSS (Utility-First Responsive Design)
+- Vue Router & Pinia 
+- Axios / Native Fetch for consuming DummyJSON APIs
 
-## ✨ Features
-
-- **🔐 Authentication System:**
-  - Secure Login & Signup.
-  - User accounts are stored locally (browser memory).
-  - Protected Routes (cannot access the app without logging in).
-
-- **🔍 Advanced Search & Sorting:**
-  - Real-time search using the DummyJSON API.
-  - **Generation Logic:** Automatically sorts results into *Elders (60+)*, *Adults (25-59)*, and *Youth (<25)*.
-
-- **📜 Detail View (Modal):**
-  - Click any card to open a "Vintage File" popup.
-  - View full details: Address, Blood Group, University, Company, etc.
-
-- **⚔️ My Clan (Global State):**
-  - Add members to your personal "Saved List".
-  - Uses **Pinia** for state management (Data persists even after refresh).
-  - Remove members from your clan.
-
-- **🎨 UI/UX:**
-  - Fully responsive design.
-  - Custom "Vintage Paper" aesthetic using **Tailwind CSS**.
-
-## 🛠️ Tech Stack
-
-- **Framework:** Vue 3 (Composition API)
-- **Language:** TypeScript
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS
-- **State Management:** Pinia
-- **Routing:** Vue Router
-- **Icons:** Vintage ASCII Art & Emojis
-
-## 🚀 How to Run the Project
-
-1.  **Clone the repository** (or download the ZIP):
-    ```bash
-    git clone [https://github.com/your-username/family-root.git](https://github.com/your-username/family-root.git)
-    cd family-root
-    ```
-
-2.  **Install Dependencies:**
+## 🛠️ Setup & Run Instructions
+1. Extract the project ZIP and navigate to the root directory `Root`.
+2. Install the necessary dependencies:
     ```bash
     npm install
     ```
-
-3.  **Run the Development Server:**
+3. Run the development server:
     ```bash
     npm run dev
     ```
+4. Open the localhost URL (usually `http://localhost:5173/`).
 
-4.  **Open the App:**
-    Click the link in your terminal (usually `http://localhost:5173`).
+## 🔑 Demo Access
+By default, the application is protected by a route guard. You must sign in.
+We are using the **Live DummyJSON API endpoint (`/auth/login`)**.
+You can use the default DummyJSON credentials:
+- **Username**: `emilys`
+- **Password**: `emilyspass`
 
-## 🔑 Default Login (For Testing)
+## 🌟 Implemented Features & Bonus Tiers
+- **Dynamic Routing** (`/user/:id`): Clicking any profile dynamically routes to a standalone Details View.
+- **Strict TypeScript**: Used `types/index.ts` to strictly enforce API responses.
+- **Component Separation**: Logical chunks (like `NavBar.vue` and `UserCard.vue`) are isolated and reused across the app using slots.
+- **Shopping Cart Parity (Family Book)**: Users can add profiles to a global Pinia store. The code is structured securely so that multiple local users automatically partition their "carts" using dynamic storage keys. 
+- **Dark Mode**: Automatically respects OS preference and can be toggled via the sun/moon icon.
 
-You can create a **New Account** on the Signup page, or use these credentials if you have already set them up:
-
-- **Username:** `admin`
-- **Password:** `1234`
-
-*(Note: Since this app uses LocalStorage, you will need to Sign Up first on your own machine!)*
-
-## 📂 Project Structure
-
-```bash
-src/
-├── assets/          # Static images and styles
-├── components/      # Reusable UI components (Modals, Cards)
-├── router/          # Navigation logic (Login -> Home -> Clan)
-├── stores/          # Pinia State Stores (Auth, Clan)
-├── views/           # Main Pages (Login, Signup, Home, ClanView)
-├── App.vue          # Main App Component
-└── main.ts          # Entry Point
-
-
-
-Created by Dilsan for University Assignment 2026.
+Enjoy!
