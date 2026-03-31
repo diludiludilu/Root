@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { useClanStore } from '../stores/clan';
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
 
 const clanStore = useClanStore();
 const router = useRouter();
+
+onMounted(() => {
+  clanStore.refreshMembers();
+});
 </script>
 
 <template>
@@ -13,7 +18,7 @@ const router = useRouter();
       <div class="flex items-center gap-3">
         <h1 class="text-xl font-bold tracking-widest">MY FAMILY</h1>
       </div>
-      <button @click="router.push('/')" class="text-sm font-bold hover:text-vintage-gold dark:hover:text-gray-300 underline decoration-vintage-gold dark:decoration-gray-300">
+      <button @click="router.push('/home')" class="text-sm font-bold hover:text-vintage-gold dark:hover:text-gray-300 underline decoration-vintage-gold dark:decoration-gray-300">
         ⬅ Back to Search
       </button>
     </nav>
@@ -24,7 +29,7 @@ const router = useRouter();
 
       <div v-if="clanStore.members.length === 0" class="text-center opacity-50 mt-20">
         <p class="text-2xl">Your family book is empty.</p>
-        <button @click="router.push('/')" class="mt-4 bg-vintage-ink dark:bg-gray-700 text-vintage-paper dark:text-gray-100 px-6 py-2 rounded font-bold hover:bg-vintage-gold dark:hover:bg-gray-600 transition-colors">
+        <button @click="router.push('/home')" class="mt-4 bg-vintage-ink dark:bg-gray-700 text-vintage-paper dark:text-gray-100 px-6 py-2 rounded font-bold hover:bg-vintage-gold dark:hover:bg-gray-600 transition-colors">
           Find Your Root
         </button>
       </div>

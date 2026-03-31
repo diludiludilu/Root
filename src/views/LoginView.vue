@@ -13,7 +13,7 @@ const handleLogin = () => {
   const success = auth.login(username.value, password.value);
   
   if (success) {
-    router.push('/'); // Go to Home
+    router.push('/home'); // Go to Home
   } else {
     error.value = 'Please, check your username / password.';
   }

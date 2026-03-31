@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import UserDetailModal from '../components/UserDetailModal.vue';
+import { useAuthStore } from '../stores/auth';
 
 // 1. Types
 interface User {
@@ -27,6 +28,7 @@ interface User {
 }
 
 const router = useRouter();
+const auth = useAuthStore();
 const searchQuery = ref('');
 const loading = ref(false);
 const users = ref<User[]>([]);
@@ -68,9 +70,8 @@ const handleSearch = async () => {
 };
 
 const handleLogout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  router.push('/login');
+  auth.logout();
+  router.push('/');
 };
 </script>
 

@@ -26,7 +26,7 @@ const handleSignup = () => {
   
   // 3. If successful, go to login
   if (success) {
-    router.push('/login');
+    router.push('/');
   }
 };
 </script>
@@ -67,7 +67,7 @@ const handleSignup = () => {
 
       <div class="mt-4 text-center text-sm">
         <p>Already have a book?</p>
-        <router-link to="/login" class="font-bold underline text-vintage-ink dark:text-gray-300 hover:text-vintage-gold dark:hover:text-white">
+        <router-link to="/" class="font-bold underline text-vintage-ink dark:text-gray-300 hover:text-vintage-gold dark:hover:text-white">
           Open Existing Book (Login)
         </router-link>
       </div>
