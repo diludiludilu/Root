@@ -2,21 +2,44 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useClanStore } from '../stores/clan';
+import { useAuthStore } from '../stores/auth';
+import { useOverridesStore } from '../stores/overrides';
 import NavBar from '../components/NavBar.vue';
 import type { User } from '../types';
 
 const route = useRoute();
 const router = useRouter();
 const clanStore = useClanStore();
+const authStore = useAuthStore();
+const overridesStore = useOverridesStore();
 
 const user = ref<User | null>(null);
 const loading = ref(true);
+const imageError = ref(false);
 
 onMounted(async () => {
-  const id = route.params.id;
+  const id = parseInt(route.params.id as string);
   try {
-    const res = await fetch(`https://dummyjson.com/users/${id}`);
-    user.value = await res.json();
+    let apiData = null;
+    
+    // 1. Explicitly trap dynamically assigned synthetic Local IDs
+    if (id >= 10000) {
+      const syntheticArray = overridesStore.getLocalProfiles(authStore.users);
+      const matchedUser = syntheticArray.find(u => u.id === id);
+      if (matchedUser) {
+        apiData = matchedUser;
+      }
+    }
+    
+    // 2. Official standard DummyJSON routing
+    if (!apiData && id < 10000) {
+      const res = await fetch(`https://dummyjson.com/users/${id}`);
+      if (res.ok) apiData = await res.json();
+    }
+
+    if (apiData) {
+       user.value = overridesStore.applyOverride(apiData);
+    }
   } catch (err) {
     console.error(err);
   } finally {
@@ -39,7 +62,14 @@ const addToClan = (user: User) => {
       <div v-else-if="user" class="bg-white dark:bg-gray-800 w-full max-w-3xl rounded-lg shadow-2xl border-4 border-vintage-ink dark:border-gray-600 relative overflow-hidden p-6 md:p-10 transition-colors duration-300">
         
         <div class="flex flex-col md:flex-row gap-8">
-          <img :src="user.image" class="w-40 h-40 rounded-full border-4 border-vintage-ink dark:border-gray-600 bg-gray-200 mx-auto md:mx-0 shadow-md">
+          <div class="flex-shrink-0 mx-auto md:mx-0">
+            <img v-if="user.image && !imageError" :src="user.image" @error="imageError = true" class="w-40 h-40 rounded-full border-4 border-vintage-ink dark:border-gray-600 bg-gray-200 shadow-md object-cover">
+            <div v-else class="w-40 h-40 rounded-full border-4 border-vintage-ink dark:border-gray-600 bg-gray-200 shadow-md flex items-center justify-center overflow-hidden opacity-80">
+              <svg class="w-32 h-32 text-vintage-ink dark:text-gray-500 mt-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+            </div>
+          </div>
           
           <div class="flex-grow text-center md:text-left">
             <h2 class="text-3xl md:text-4xl font-bold tracking-wider dark:text-white">{{ user.firstName }} {{ user.lastName }}</h2>

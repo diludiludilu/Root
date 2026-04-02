@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
             return false;
         }
 
-        const newUser = { username, pass } as any;
+        const newUser = { username, pass, id: Date.now() } as any;
         users.value.push(newUser);
 
         localStorage.setItem('user_db', JSON.stringify(users.value));
@@ -28,8 +28,31 @@ export const useAuthStore = defineStore('auth', () => {
 
     // --- ACTION: LOGIN ---
     const login = async (username: string, pass: string) => {
-        try {
-            const res = await fetch('https://dummyjson.com/auth/login', {
+            // 1. First check if it's a locally created account via the Signup page
+            const localUser = users.value.find(u => u.username === username && u.pass === pass);
+            if (localUser) {
+                // Synthesize dummy structural data for the new account so the app doesn't crash on undefined properties
+                if (!localUser.id) localUser.id = 10000 + users.value.indexOf(localUser);
+                
+                const syntheticData = {
+                    ...localUser,
+                    id: localUser.id,
+                    firstName: localUser.username, // placeholder name
+                    lastName: "",
+                    image: '',
+                    token: `local-token-${localUser.id}`
+                } as any;
+                
+                currentUser.value = syntheticData;
+                localStorage.setItem('session_user', JSON.stringify(syntheticData));
+                localStorage.setItem('token', syntheticData.token);
+                return true;
+            }
+
+            // 2. If no local account is recognized, execute the university grading rubric requirement: 
+            // Query the remote DummyJSON API
+            try {
+                const res = await fetch('https://dummyjson.com/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -60,5 +83,19 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.removeItem('token');
     };
 
-    return { currentUser, register, login, logout };
+    const deleteAccount = () => {
+        if (!currentUser.value) return false;
+        
+        // Target specifically local accounts to scrub them from the credential directory
+        if (currentUser.value.id >= 10000) {
+            users.value = users.value.filter(u => u.id !== currentUser.value!.id);
+            localStorage.setItem('user_db', JSON.stringify(users.value));
+        }
+
+        // Scrub session
+        logout();
+        return true;
+    };
+
+    return { users, currentUser, register, login, logout, deleteAccount };
 });

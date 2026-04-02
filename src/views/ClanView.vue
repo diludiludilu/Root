@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
 import { useClanStore } from '../stores/clan';
+import { useOverridesStore } from '../stores/overrides';
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
 import UserCard from '../components/UserCard.vue';
 import NavBar from '../components/NavBar.vue';
 
 const clanStore = useClanStore();
+const overridesStore = useOverridesStore();
 const router = useRouter();
+
+const displayedMembers = computed(() => {
+  return overridesStore.applyOverrides(clanStore.members);
+});
 
 onMounted(() => {
   clanStore.refreshMembers();
@@ -28,7 +34,7 @@ onMounted(() => {
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <UserCard v-for="person in clanStore.members" :key="person.id" :user="person">
+        <UserCard v-for="person in displayedMembers" :key="person.id" :user="person">
           <template #top-right>
             <button @click="clanStore.removeMember(person.id)" class="absolute top-2 right-2 text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 font-bold text-xl" title="Remove">
               &times;
