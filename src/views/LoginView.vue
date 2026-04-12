@@ -1,63 +1,89 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth'; // Import the new store
+import { useAuthStore } from '../stores/auth';
 
-const username = ref('');
-const password = ref('');
-const error = ref('');
 const router = useRouter();
 const auth = useAuthStore();
 
+const username = ref('emilys'); // Pre-filled with valid DummyJSON user
+const password = ref('emilyspass');
+const error = ref('');
+const loading = ref(false);
+
 const handleLogin = async () => {
+  error.value = '';
+  loading.value = true;
+  
   const success = await auth.login(username.value, password.value);
   
+  loading.value = false;
   if (success) {
-    router.push('/home'); // Go to Home
+    router.push('/');
   } else {
-    error.value = 'Please, check your username / password.';
+    error.value = 'Invalid Credentials. Use emilys / emilyspass';
   }
 };
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-vintage-paper dark:bg-[#121212] text-vintage-ink dark:text-gray-100 font-serif transition-colors duration-300">
-    
-    <div class="bg-white dark:bg-gray-800 p-8 rounded shadow-2xl border-2 border-vintage-gold dark:border-gray-600 w-96 relative transition-colors duration-300">
-      <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-red-800 border-2 border-black"></div>
-
-      <h1 class="text-3xl font-bold text-center mb-6 underline decoration-vintage-gold">Family Root Finder</h1>
+  <div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4 transition-colors">
+    <div class="max-w-md w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
       
-      <p class="mb-4 text-center italic text-sm text-gray-600">"Connect with your past..."</p>
-
-      <form @submit.prevent="handleLogin" class="space-y-4">
-        <div>
-          <label class="block mb-1 font-bold">Username</label>
-          <input v-model="username" type="text" placeholder="Enter username" 
-                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-vintage-gold transition-colors duration-300" />
-        </div>
-        
-        <div>
-          <label class="block mb-1 font-bold">Password</label>
-          <input v-model="password" type="password" placeholder="Enter password" 
-                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-vintage-gold transition-colors duration-300" />
-        </div>
-
-        <p v-if="error" class="text-red-600 text-sm font-bold text-center">{{ error }}</p>
-
-        <button type="submit" 
-                class="w-full bg-vintage-ink dark:bg-gray-700 text-vintage-paper dark:text-white py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold dark:hover:bg-gray-600 transition-colors shadow-md">
-          Open Book
-        </button>
-      </form>
-
-      <div class="mt-6 text-center text-sm border-t border-gray-300 dark:border-gray-600 pt-4">
-        <p class="text-gray-600 dark:text-gray-400 mb-2">New to the family?</p>
-        <router-link to="/signup" class="block w-full bg-white dark:bg-gray-700 border-2 border-vintage-ink dark:border-gray-500 text-vintage-ink dark:text-white py-2 font-bold uppercase hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-center decoration-0">
-          Create New Account
-        </router-link>
+      <!-- Header -->
+      <div class="bg-red-700 p-6 text-center text-white">
+        <svg class="h-12 w-12 mx-auto text-white mb-2" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12,2c0,0-8,6.86-8,12.5C4,18.64,7.58,22,12,22s8-3.36,8-7.5C20,8.86,12,2,12,2z" />
+        </svg>
+        <h2 class="text-2xl font-bold">Blood Link</h2>
+        <p class="text-red-200 mt-1">Sign in to find and request donors</p>
       </div>
 
+      <!-- Form -->
+      <div class="p-8">
+        <form @submit.prevent="handleLogin" class="space-y-6">
+          <div v-if="error" class="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200">
+            {{ error }}
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Username</label>
+            <input 
+              v-model="username" 
+              type="text" 
+              required
+              class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Password</label>
+            <input 
+              v-model="password" 
+              type="password" 
+              required
+              class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow"
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            :disabled="loading"
+            class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2"
+            :class="{ 'opacity-70 cursor-not-allowed': loading }"
+          >
+            <svg v-if="loading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ loading ? 'Signing in...' : 'Sign In' }}
+          </button>
+        </form>
+        
+        <div class="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+          DummyJSON test account: emilys / emilyspass
+        </div>
+      </div>
     </div>
   </div>
 </template>

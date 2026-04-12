@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import ThemeToggle from './components/ThemeToggle.vue'
+import { useRoute } from 'vue-router';
+import NavBar from './components/NavBar.vue';
+
+const route = useRoute();
 </script>
 
 <template>
-  <ThemeToggle />
-  <router-view></router-view>
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
+    <NavBar v-if="route.name !== 'login'" />
+    <router-view></router-view>
+  </div>
 </template>

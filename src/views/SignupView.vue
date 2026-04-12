@@ -2,74 +2,141 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import type { LocalDonorAccount } from '../types/api';
 
-const auth = useAuthStore();
 const router = useRouter();
+const auth = useAuthStore();
 
-const username = ref('');
-const password = ref('');
-const confirmPassword = ref('');
+const form = ref({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+    bloodGroup: '',
+    address: { address: '', city: '', state: '', postalCode: '' },
+    phone: '',
+    email: ''
+});
 
-const handleSignup = () => {
-  // 1. Validation
-  if (password.value !== confirmPassword.value) {
-    alert("⚠️ Passwords do not match!");
-    return;
-  }
-  if (username.value.length < 3) {
-    alert("⚠️ Username is too short!");
-    return;
-  }
-  
-  // 2. Register via Store
-  const success = auth.register(username.value, password.value);
-  
-  // 3. If successful, go to login
-  if (success) {
-    router.push('/');
-  }
+const error = ref('');
+const loading = ref(false);
+
+const handleSignup = async () => {
+    error.value = '';
+    loading.value = true;
+
+    try {
+        const newAccount: LocalDonorAccount = {
+            id: Date.now(),
+            ...form.value,
+            image: `https://dummyjson.com/icon/${form.value.username}/128` // fallback dummy image
+        };
+
+        const result = auth.register(newAccount);
+
+        if (result.success) {
+            // Log them in immediately after creating
+            const loginSuccess = await auth.login(form.value.username, form.value.password);
+            if (loginSuccess) {
+                router.push('/');
+            } else {
+                error.value = "Registered successfully but failed to auto-login.";
+            }
+        } else {
+            error.value = result.message;
+        }
+    } catch (err: any) {
+        error.value = err.message || "An error occurred";
+    } finally {
+        loading.value = false;
+    }
 };
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-vintage-paper dark:bg-[#121212] text-vintage-ink dark:text-gray-100 font-serif transition-colors duration-300">
-    
-    <div class="bg-white dark:bg-gray-800 p-8 rounded shadow-2xl border-2 border-vintage-gold dark:border-gray-600 w-96 relative transition-colors duration-300">
-      <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-green-800 border-2 border-black"></div>
+  <div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 p-4 py-12 transition-colors">
+    <div class="max-w-2xl w-full bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      
+      <!-- Header -->
+      <div class="bg-slate-800 dark:bg-slate-900 p-6 text-center text-white border-b border-slate-700">
+        <h2 class="text-2xl font-bold">Register as a Donor</h2>
+        <p class="text-slate-400 mt-1">Join the community and save lives.</p>
+      </div>
 
-      <h1 class="text-3xl font-bold text-center mb-2 underline decoration-vintage-gold">Family Root Finder</h1>
-      <p class="text-center text-sm text-gray-600 mb-6 italic">"Connect with your past..."</p>
+      <!-- Form -->
+      <div class="p-8">
+        <form @submit.prevent="handleSignup" class="space-y-6">
+          <div v-if="error" class="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200">
+            {{ error }}
+          </div>
 
-      <form @submit.prevent="handleSignup" class="space-y-4">
-        <div>
-          <label class="block mb-1 font-bold">Your Name</label>
-          <input v-model="username" type="text" placeholder="NewUser123" required
-                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-600 outline-none transition-colors duration-300" />
-        </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">First Name</label>
+              <input v-model="form.firstName" type="text" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Last Name</label>
+              <input v-model="form.lastName" type="text" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Username</label>
+              <input v-model="form.username" type="text" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Password</label>
+              <input v-model="form.password" type="password" required minlength="6" class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-1">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Blood Group</label>
+              <select v-model="form.bloodGroup" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow">
+                <option disabled value="">Select</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
+              <input v-model="form.phone" type="tel" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">City</label>
+              <input v-model="form.address.city" type="text" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">State</label>
+              <input v-model="form.address.state" type="text" required class="w-full rounded-lg border border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600 dark:text-white px-4 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-shadow" />
+            </div>
+          </div>
+
+          <button 
+            type="submit" 
+            :disabled="loading"
+            class="w-full mt-4 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-lg transition-colors"
+            :class="{ 'opacity-70 cursor-not-allowed': loading }"
+          >
+            {{ loading ? 'Creating Account...' : 'Create Account' }}
+          </button>
+        </form>
         
-        <div>
-          <label class="block mb-1 font-bold">Create New Password</label>
-          <input v-model="password" type="password" placeholder="******" required
-                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-600 outline-none transition-colors duration-300" />
+        <div class="mt-6 text-center text-sm">
+           <router-link to="/login" class="text-red-600 hover:underline font-medium">Already have an account? Sign in</router-link>
         </div>
-
-        <div>
-          <label class="block mb-1 font-bold">Confirm Password</label>
-          <input v-model="confirmPassword" type="password" placeholder="******" required
-                 class="w-full border-2 border-vintage-ink dark:border-gray-600 p-2 rounded bg-gray-50 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-green-600 outline-none transition-colors duration-300" />
-        </div>
-
-        <button type="submit" 
-                class="w-full bg-vintage-ink dark:bg-gray-700 text-vintage-paper dark:text-white py-2 font-bold uppercase tracking-widest hover:bg-vintage-gold dark:hover:bg-gray-600 transition-colors shadow-md">
-          Create Account
-        </button>
-      </form>
-
-      <div class="mt-4 text-center text-sm">
-        <p>Already have a book?</p>
-        <router-link to="/" class="font-bold underline text-vintage-ink dark:text-gray-300 hover:text-vintage-gold dark:hover:text-white">
-          Open Existing Book (Login)
-        </router-link>
       </div>
     </div>
   </div>

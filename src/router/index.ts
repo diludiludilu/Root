@@ -1,25 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
-import SignupView from '../views/SignupView.vue'// <--- Added this
-import HomeView from '../views/HomeView.vue'
-import ClanView from '../views/ClanView.vue'
-import UserDetailView from '../views/UserDetailView.vue'
-import ProfileView from '../views/ProfileView.vue'
+import SignupView from '../views/SignupView.vue'
+import DashboardView from '../views/DashboardView.vue'
+import FindDonorsView from '../views/FindDonorsView.vue'
+import DonorDetailView from '../views/DonorDetailView.vue'
+import FindHospitalsView from '../views/FindHospitalsView.vue'
+import RequestsView from '../views/RequestsView.vue'
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', name: 'login', component: LoginView },
-        { path: '/signup', name: 'signup', component: SignupView }, // <--- Added this
-        { path: '/home', name: 'home', component: HomeView },
-        { path: '/clan', name: 'clan', component: ClanView },
-        { path: '/user/:id', name: 'userDetail', component: UserDetailView },
-        { path: '/profile', name: 'profile', component: ProfileView }
+        { path: '/login', name: 'login', component: LoginView },
+        { path: '/signup', name: 'signup', component: SignupView },
+        { path: '/', name: 'dashboard', component: DashboardView },
+        { path: '/find-donors', name: 'findDonors', component: FindDonorsView },
+        { path: '/find-hospitals', name: 'findHospitals', component: FindHospitalsView },
+        { path: '/donor/:id', name: 'donorDetail', component: DonorDetailView },
+        { path: '/requests', name: 'requests', component: RequestsView }
     ]
 })
 
 // Security Guard
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
     const isAuthenticated = localStorage.getItem('token');
     
     if (to.name !== 'login' && to.name !== 'signup' && !isAuthenticated) {

@@ -1,0 +1,7 @@
+
+> root@0.0.0 build
+> vue-tsc -b && vite build
+
+src/components/FilterBar.vue(2,10): error TS2440: Import declaration conflicts with local declaration of 'defineModel'.
+src/router/index.ts(24,24): error TS6133: 'from' is declared but its value is never read.
+src/stores/donors.ts(2,15): error TS6133: 'computed' is declared but its value is never read.
