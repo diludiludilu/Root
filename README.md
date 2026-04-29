@@ -46,7 +46,7 @@ The app uses the **live DummyJSON `/auth/login` endpoint** to simulate JWT authe
 - ✅ **API Fetch** — Loads all 200+ donors from `https://dummyjson.com/users`
 - ✅ **Search & Filter** — Filter by blood group (dropdown) + city/state (text search)
 - ✅ **Detail View** — `/donor/:id` dynamic route with full profile and contact info
-### Additional featu
+### Additional features 
 - ✅ **Authentication Simulation** — JWT from DummyJSON `/auth/login` stored in localStorage; local account registration via signup
 - ✅ **Bookmarks** — Pinia-powered request list and hospital pledges persisted in localStorage
 - ✅ **Dynamic Routing** — `vue-router` with `/donor/:id`, route guards protect all pages
