@@ -1,6 +1,6 @@
-# Family Root Finder - CS3404 mini Project
+# Blood Donor Finder - CS3404 mini Project
 
-Welcome to the Family Root Finder SPA! This project is a modern Vue 3 application built for the CS3404 GUI Programming Mini Project, achieving all strict and bonus requirements.
+Welcome to the Blood Donor Finder SPA! This project is a modern Vue 3 application built for the CS3404 GUI Programming Mini Project, achieving all strict and bonus requirements.
 
 ## 🚀 Tech Stack
 - Vue 3 (Composition API)

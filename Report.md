@@ -1,7 +1,7 @@
 # CS3404 Mini Project Report
 
 ## Overview
-The "Family Root Finder" SPA was developed using Vue 3 Composition API, TypeScript, Pinia, and Tailwind CSS. It allows users to securely login and assemble historical family records by consuming the remote DummyJSON public API.
+The "Blood Donor Finder" SPA was developed using Vue 3 Composition API, TypeScript, Pinia, and Tailwind CSS. It allows users to securely login and assemble historical family records by consuming the remote DummyJSON public API.
 
 ## Implemented Features
 1. **API Interaction**: Fetches global user directories from `https://dummyjson.com/users` and targeted queries from `/search`.
