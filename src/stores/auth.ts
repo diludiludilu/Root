@@ -30,11 +30,12 @@ export const useAuthStore = defineStore('auth', () => {
 
             if (localMatch) {
                 // Ensure we don't save password in session state
-                const { password, ...safeUser } = localMatch;
-                const sessionUser = {
+                const { password: _pw, ...safeUser } = localMatch;
+                const sessionUser: UserLoginResponse = {
                     ...safeUser,
-                    token: `local-token-${safeUser.id}`
-                } as any;
+                    token: `local-token-${safeUser.id}`,
+                    refreshToken: '',
+                };
 
                 currentUser.value = sessionUser;
                 localStorage.setItem('session_user', JSON.stringify(sessionUser));

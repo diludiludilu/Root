@@ -1,20 +1,47 @@
-The aim 01: Start the development server
-Actual prompt: run
+The aim 01: Generate strict TypeScript interfaces for the DummyJSON /users API response so I don't use any type
+Actual prompt: i am using dummyjson api to get users data. the response has fields like id, firstName, lastName, bloodGroup, phone, email, address object with city state postalCode, and image. can you write typescript interface for this? i dont want to use any type, my lecturer will give fail mark for that
 
-The aim 02: Change the default page to the Login view instead of Home
-Actual prompt: first should be log in page
+The aim 02: Write the TypeScript interface for the JWT login response from DummyJSON /auth/login endpoint
+Actual prompt: ok now for the login api from dummyjson, when i post username and password it return token, refreshToken and also user details like firstName, lastName, image etc. write interface for that also please, and it should extend from the Donor interface i made before
 
-The aim 03: Run the updated application to test routing
-Actual prompt: now run
+The aim 03: Create the Pinia auth store with login function that calls DummyJSON and saves token to localStorage
+Actual prompt: i need pinia store for authentication. it should have login function that call https://dummyjson.com/auth/login with POST method, and save the token in localStorage. also need logout function to remove from localStorage. write this in typescript please no any type
 
-The aim 04: Ensure the app stays on the login page specifically when not authenticated instead of bypassing it
-Actual prompt: but first page stays as home not as login page i want when i run this app it should be in login page first
+The aim 04: Write the Vue Router configuration with a navigation guard that redirects unauthenticated users to login
+Actual prompt: how to make route guard in vue router so if user not logged in it will go to login page automatically? i have token saved in localStorage, so i want to check that. also i have routes for login, signup, dashboard, find-donors, donor detail. show me how to write this
 
-The aim 05: Fix state logic so different accounts have different shopping cart metadata
-Actual prompt: for every different account it should have different family cart details right
+The aim 05: Style the login page with Tailwind CSS to look premium with two panels - left branding and right form
+Actual prompt: my login page looks very basic only. i want to make it look professional like modern apps. can you write tailwind css classes for a split screen login page, left side should have dark red gradient with app branding and some stats, right side should have the login form with nice input fields. i am using vue 3 with tailwind
 
-The aim 06: Deep-dive into local storage binding for the Clan cart because data seemed to bleed between sessions
-Actual prompt: but i think it still like this check properly and change it please
+The aim 06: Create the DonorCard component that shows avatar, blood group badge, name, location and request button
+Actual prompt: i need a card component in vue 3 for showing blood donor. it should show profile image as circle, blood group as red badge on top right corner, donor full name, city and state, and a button to send blood request. when card is clicked it should go to donor detail page using router. write the tailwind classes to make it look good with hover effect
 
-The aim 07: Refactor entirely for an A+ distinction based on the university CS3404 rubric rules
-Actual prompt: these are my lecturer guide make it according to that
+The aim 07: Write the FilterBar component with blood group dropdown and location text input using defineModel
+Actual prompt: i have find donors page and i want to add filter bar component. it should have blood group dropdown with A+ A- B+ B- AB+ AB- O+ O- options, and also a text input for location search. i want to use defineModel for two way binding in vue 3 composition api. also add a clear button to reset both filters
+
+The aim 08: Add computed property to filter the donors array based on blood group and location inputs
+Actual prompt: in my FindDonorsView i have donors array from pinia store and i have two filter values, searchBloodGroup and searchLocation. how to write computed property that filter the array? blood group should be exact match, location should check if city or state contains the search text, case insensitive
+
+The aim 09: Implement pagination for the donor grid showing 12 cards per page with page number buttons
+Actual prompt: i have 200 donors showing in grid but its too much scrolling. can you help me add pagination to show only 12 donors per page? i need previous next buttons and also page number buttons in middle. the current page number button should have red background. write this in vue 3 composition api with computed properties
+
+The aim 10: Implement dark mode with Tailwind using a Pinia store that watches and applies the class to html element
+Actual prompt: how to implement dark mode in vue 3 with tailwind css? i want to save the preference in localStorage and also check system preference on first load. i heard i need to add dark class to html element. can you write pinia store for this and also a toggle button component with sun and moon icon
+
+The aim 11: Create the hospital store with static data and pledge/cancel functions that persist to localStorage
+Actual prompt: i need a pinia store for hospitals. i dont have hospital api so i will keep the data as static array inside the store. each hospital should have id, name, address object, urgencyLevel which should be only Normal High or Critical (use union type), bloodTypesNeeded array, image url, and contact number. also add pledgeBlood and cancelPledge functions that save to localStorage
+
+The aim 12: Style the HospitalCard component with urgency color coding and blood type pills
+Actual prompt: i have hospital card component but the styling is not good. i want the urgencyLevel to show as colored badge, Normal should be blue, High should be orange, Critical should be red and blinking. also i want the bloodTypesNeeded to show as small pills/tags with red background. write tailwind classes for this, i am using object lookup pattern to get the class string
+
+The aim 13: Fix the TypeScript error "Object is possibly undefined" when accessing array index in pagination
+Actual prompt: i am getting typescript error saying "Object is possibly undefined" on this line: visiblePages[0] > 1 and also visiblePages[visiblePages.length - 1]. how to fix this without using any type? my lecturer strict about no any
+
+The aim 14: Create the DonorDetailView with a hero banner, floating avatar and contact info cards
+Actual prompt: for the donor detail page /donor/:id i want a nice layout. at top should be a big gradient red banner, the profile photo should float half inside and half outside the banner. below that show name, location, and a send request button. then show contact info like email and phone as separate cards with icon. write this in vue 3 template with tailwind
+
+The aim 15: Write the signup form component that registers a local account and auto-logins after registration
+Actual prompt: i need signup page where user can register as new donor. the form should collect firstName, lastName, username, password, bloodGroup, phone, email, city, state. after submitting it should save to localStorage as local account and then automatically login and redirect to dashboard. how to write the handleSignup function in vue 3 composition api typescript
+
+The aim 16: Add the user avatar and name pill to the NavBar and show activity count badge on the bell icon
+Actual prompt: i want to improve my navbar. right now it only has logout button. i want to show logged in user profile photo and first name as a small pill on the right side. also want to show a notification badge number on the activity button that shows total of blood requests and hospital pledges. how to do this in vue 3 with typescript? use computated property for the count
